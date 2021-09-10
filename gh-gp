@@ -1,0 +1,53 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+function openRepository
+{
+    GITHUBURL=$(gh browse --no-browser)
+    GITPODURL="https://gitpod.io#${GITHUBURL}"
+
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        sensible-browser "${GITPODURL}" || x-www-browser "${GITPODURL}" ||  xdg-open "${GITPODURL}" || gnome-open "${GITPODURL}"
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        open "${GITPODURL}" 
+    else
+        echo Error: unknown operating system, unable to open "${GITPODURL}"
+        exit 1
+    fi
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+  open|--open)
+    openRepository
+    exit 0
+    ;;
+  -h|--help)
+    cat << EOF
+GitHub Command line interface for Gitpod
+
+Usage:
+  gh gp [command]
+
+Available Commands:
+  help                Help about any command
+  open                Opens the GitHub repository in a workspace
+
+Flags:
+  -h, --help   help for gh gp
+EOF
+    exit 0
+    ;;
+    *)
+    cat << EOF
+Error: unknown command "$1" for "gh gp"
+Run 'gh gp --help' for usage.
+EOF
+  exit 1
+  ;;
+  esac
+done
+
+# default behaviour is to open the repository
+openRepository

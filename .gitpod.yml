@@ -1,0 +1,12 @@
+# List the start up tasks. You can start them in parallel in multiple terminals. See https://www.gitpod.io/docs/config-start-tasks/
+tasks:
+  - init: |
+      sudo apt install shellcheck
+    command: |
+      brew install gh
+      gh extension install .
+      shellcheck gh-gp
+
+vscode:
+  extensions:
+    - timonwong.shellcheck
