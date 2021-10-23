@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 function openRepository
 {
-    GITHUBURL=$(gh browse --no-browser)
+    GITHUBURL=$(gh browse --no-browser --branch $(git branch --show-current))
     GITPODURL="https://gitpod.io#${GITHUBURL}"
 
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
